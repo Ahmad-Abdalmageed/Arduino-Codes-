@@ -1,9 +1,14 @@
 // Servo Declarations 
 #include <Servo.h>
-Servo myservo;
+Servo myservo_right;
+Servo myservo_left ; 
 //Sensors 
 int pressure = A0 ; 
 int Vo ;
+
+int right_wing = 9 ;
+int left_wing = 10 ;
+int pos = 0;
 //Gyro 
 #include<Wire.h>
 const int MPU_addr=0x68;
@@ -13,12 +18,27 @@ int maxVal=402;
 double x;
 double y;
 double z;
+
+//Motors
+int motor = 6; 
+//Functions 
+double turn_right() 
+{
+  myservo_right.write(-45) ;
+  myservo_left.write(-45) ; 
+}
+double turn_left() 
+{
+  myservo_left.write(-45) ;
+  myservo_right.write(-45) ; 
+}
  
 void setup() 
 {
   //Servo Attachment
-  myservo.attach(9);
-  myservo.attach(8);
+  myservo_right.attach(right_wing);
+  myservo_left.attach(left_wing);
+  
   //Gyro Attachment
   Wire.begin();
   Wire.beginTransmission(MPU_addr);
@@ -26,7 +46,6 @@ void setup()
   Wire.write(0);
   Wire.endTransmission(true);
   Serial.begin(9600);
-
 }
 
 void loop() 
@@ -54,13 +73,21 @@ void loop()
   Serial.println((char)176);   
   Serial.println("-------------------------------------------");
   delay(1000);
+  
   //Sensor Logic 
   Vo = analogRead(pressure);
   Serial.println (Vo);
-  /*
-   * 
-   * some Logic for calculating pressure  
-   */
-   //Some Logic for servos 
   
+  //Servos 
+  if (x > 45 ) 
+  {
+    turn_right() ;   
+  }
+  if (x < 45 )
+  {
+    turn_left() ; 
+  }
+  //Fadel code el FSR 
+  //Motor 
+  analogWrite(motor , 125 );
 }

@@ -6,6 +6,7 @@ int maxVal=402;
 double x;
 double y;
 double z;
+
  
 void setup(){
   Wire.begin();
