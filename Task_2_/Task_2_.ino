@@ -25,6 +25,7 @@ double z;
 
 //Motors
 int motor = 6;
+int led = 8;
 //Functions
 void setup()
 {
@@ -42,6 +43,7 @@ void setup()
   Serial.begin(9600);
   //MOTOR
   pinMode(motor , OUTPUT);
+  pinMode(led , OUTPUT);
 }
 
 void loop()
@@ -74,30 +76,36 @@ void loop()
   Serial.println((char)176);
   Serial.println("-------------------------------------------");
   delay(1000) ;  
-  if (Vo > 200 ) {
+  digitalWrite(led , HIGH);
+  if (Vo > 0 ) {
+    
     //LOGIC
     if ( x >= 20 && x<=50 )
     {
-      //Turn left
-      myservo_left.write(pos_left - 40) ;
-      myservo_right.write(pos_right -30) ;
-     }
-     else if (x >= 328 && x<=350)
-     {
+      
       //turn right 
       myservo_left.write(pos_left +40);
       myservo_right.write(pos_right+30);
      }
+     else if (x >= 328 && x<=350)
+     {
+            //Turn left
+      myservo_left.write(pos_left - 40) ;
+      myservo_right.write(pos_right -30) ;
+     }
      else if (y >= 10 && y <= 30 ) 
-     { //pitch up
-      myservo_left.write(pos_left -30) ; 
-      myservo_right.write(pos_right+30);
-      }
-     else if (y >= 300 && y<= 350) 
      {
       //pitch down 
       myservo_left.write(pos_left +50) ; 
       myservo_right.write(pos_right-50);
+
+      }
+     else if (y >= 300 && y<= 350) 
+     {
+            //pitch up
+      myservo_left.write(pos_left -30) ; 
+      myservo_right.write(pos_right+30);
+      
       } 
      else {
       myservo_left.write(pos_left);
@@ -107,7 +115,7 @@ void loop()
       //Motor
     }
     //get above water
-    else if (Vo > 1000 ) {
+    else if (Vo > 1010 ) {
       //Get out 
       
       myservo_right.write(pos_right);
